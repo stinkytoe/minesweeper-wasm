@@ -10,6 +10,10 @@ tile_images.src = 'res/minesweeper-tiles.png'
 let game = wasm.WasmGame.new();
 game.stub();
 
+function process_remaining_mines_section() {
+    document.getElementById("remaining-mines").textContent = "Mines left: " + game.get_remaining_mines();
+}
+
 function process_gamestate_section() {
     document.getElementById("gamestate-section").textContent = game.get_game_state();
 }
@@ -104,6 +108,8 @@ function process_board_section() {
 }
 
 const renderLoop = () => {
+    process_remaining_mines_section();
+
     process_gamestate_section();
 
     process_board_section();

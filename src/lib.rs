@@ -147,4 +147,8 @@ impl WasmGame {
 
         format!("{:?}", self.game.get_state())
     }
+
+    pub fn get_remaining_mines(&self) -> i32 {
+        self.game.get_remaining_mines()
+    }
 }

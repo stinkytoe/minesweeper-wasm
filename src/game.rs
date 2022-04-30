@@ -110,12 +110,24 @@ impl Game {
             if let Some(overlay) = self.overlay.as_mut() {
                 if let Some(cell) = overlay.get_cell(row, col) {
                     match cell {
-                        OverlayCell::Flagged => overlay.unflag(row, col),
-                        OverlayCell::Covered => overlay.flag(row, col),
+                        OverlayCell::Flagged => {
+                            overlay.unflag(row, col);
+                        }
+                        OverlayCell::Covered => {
+                            overlay.flag(row, col);
+                        }
                         _ => (),
                     }
                 }
             }
+        }
+    }
+
+    pub fn get_remaining_mines(&self) -> i32 {
+        if let Some(overlay) = &self.overlay {
+            overlay.get_minecount() - overlay.get_flag_count()
+        } else {
+            0
         }
     }
 }

@@ -13,6 +13,7 @@ pub enum OverlayCell {
 pub struct Overlay {
     minefield: Minefield,
     overlay_layer: Vec<Vec<OverlayCell>>,
+    flagcount: i32,
 }
 impl Overlay {
     pub fn new(rows: i32, cols: i32, minecount: i32) -> Result<Overlay, String> {
@@ -32,6 +33,7 @@ impl Overlay {
         Ok(Overlay {
             minefield,
             overlay_layer: vec![vec![OverlayCell::Covered; cols as usize]; rows as usize],
+            flagcount: 0,
         })
     }
 
@@ -100,6 +102,7 @@ impl Overlay {
         if let Some(cell) = self.get_cell_mut(row, col) {
             if *cell == OverlayCell::Covered {
                 *cell = OverlayCell::Flagged;
+                self.flagcount += 1;
             }
         }
     }
@@ -108,6 +111,7 @@ impl Overlay {
         if let Some(cell) = self.get_cell_mut(row, col) {
             if *cell == OverlayCell::Flagged {
                 *cell = OverlayCell::Covered;
+                self.flagcount -= 1;
             }
         }
     }
@@ -118,6 +122,10 @@ impl Overlay {
 
     pub fn get_cols(&self) -> i32 {
         self.minefield.get_cols()
+    }
+
+    pub fn get_minecount(&self) -> i32 {
+        self.minefield.get_minecount()
     }
 
     // if the sum of flags and covered spaces ever equal the
@@ -180,10 +188,15 @@ impl Overlay {
                     if self.minefield.is_mine(row, col) {
                         if let Some(cell_mut) = self.get_cell_mut(row, col) {
                             *cell_mut = OverlayCell::Flagged;
+                            self.flagcount += 1;
                         }
                     }
                 }
             }
         }
+    }
+
+    pub fn get_flag_count(&self) -> i32 {
+        self.flagcount
     }
 }
