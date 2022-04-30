@@ -61,7 +61,7 @@ impl Game {
                     }
                 }
 
-                //Now that the digging is done, check for victory and transition accordingly                
+                //Now that the digging is done, check for victory and transition accordingly
                 if overlay.is_victory_condition() {
                     self.state = GameState::GameWon;
                     overlay.flag_all_mines();
@@ -71,27 +71,27 @@ impl Game {
     }
 
     pub fn get_cell(&self, row: i32, col: i32) -> Option<OverlayCell> {
-        match self.overlay.as_ref() {
-            Some(overlay) => overlay,
-            None => return None,
+        if let Some(overlay) = &self.overlay {
+            overlay.get_cell(row, col)
+        } else {
+            None
         }
-        .get_cell(row, col)
     }
 
     pub fn get_cols(&self) -> i32 {
-        match self.overlay.as_ref() {
-            Some(overlay) => overlay,
-            None => return 0,
+        if let Some(overlay) = &self.overlay {
+            overlay.get_cols()
+        } else {
+            0
         }
-        .get_cols()
     }
 
     pub fn get_rows(&self) -> i32 {
-        match self.overlay.as_ref() {
-            Some(overlay) => overlay,
-            None => return 0,
+        if let Some(overlay) = &self.overlay {
+            overlay.get_rows()
+        } else {
+            0
         }
-        .get_rows()
     }
 
     pub fn get_state(&self) -> GameState {

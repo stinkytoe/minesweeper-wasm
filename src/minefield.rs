@@ -17,9 +17,10 @@ impl Minefield {
     }
 
     fn hidden_cell(&self, row: i32, col: i32) -> Option<HiddenCell> {
-        match self.is_valid_index(row, col) {
-            true => Some(self.hidden_layer[row as usize][col as usize]),
-            false => None,
+        if self.is_valid_index(row, col) {
+            Some(self.hidden_layer[row as usize][col as usize])
+        } else {
+            None
         }
     }
 
@@ -82,5 +83,5 @@ fn test_minefield_new() {
     let m1 = Minefield::new(10, 10, 100);
     assert!(m1.is_ok());
     let m2 = Minefield::new(10, 10, 101);
-    assert!(m2.is_ok());
+    assert!(m2.is_err());
 }

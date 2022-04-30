@@ -120,7 +120,7 @@ impl Overlay {
         self.minefield.get_cols()
     }
 
-    // if the sum of flags and covered spaces ever equal the 
+    // if the sum of flags and covered spaces ever equal the
     // number of mines, then the board is complete. Celebrate!
     pub fn is_victory_condition(&self) -> bool {
         let minecount = self.minefield.get_minecount();
@@ -137,7 +137,7 @@ impl Overlay {
                 }
             }
         }
-        
+
         minecount == space_and_flag_count
     }
 
@@ -176,7 +176,6 @@ impl Overlay {
     pub fn flag_all_mines(&mut self) {
         for row in 0..self.get_rows() {
             for col in 0..self.get_cols() {
-                //if let Some(cell) = self.get_cell(row, col) {
                 if let Some(OverlayCell::Covered) = self.get_cell(row, col) {
                     if self.minefield.is_mine(row, col) {
                         if let Some(cell_mut) = self.get_cell_mut(row, col) {
