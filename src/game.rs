@@ -42,7 +42,10 @@ impl Game {
                 while let Some((row, col)) = stack.pop() {
                     // unwrap OK because all pairs are gated by a call to is_covered()
                     match overlay.dig(row, col).unwrap() {
-                        OverlayCell::Exploded => self.state = GameState::GameOver,
+                        OverlayCell::Exploded => {
+                            self.state = GameState::GameOver;
+                            overlay.reveal_mines();
+                        }
                         OverlayCell::Uncovered(n) if n == 0 => {
                             for (d_row, d_col) in DIRECTIONS.iter() {
                                 let row = row + d_row;
