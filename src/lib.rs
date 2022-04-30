@@ -24,11 +24,10 @@ pub struct WasmGame {
 }
 
 impl Default for WasmGame {
-     fn default() -> Self {
-       Self::new()
-     }
+    fn default() -> Self {
+        Self::new()
+    }
 }
-    
 
 #[wasm_bindgen]
 impl WasmGame {
