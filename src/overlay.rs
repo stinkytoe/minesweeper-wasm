@@ -125,17 +125,15 @@ impl Overlay {
             for col in 0..self.get_cols() {
                 if let Some(cell) = self.get_cell(row, col) {
                     match cell {
-                        OverlayCell::Covered => {
-                            if self.minefield.is_mine(row, col) {
-                                //*cell = OverlayCell::Mine;
-                                *self.get_cell_mut(row, col).unwrap() = OverlayCell::Mine;
+                        OverlayCell::Covered if self.minefield.is_mine(row, col) => {
+                            if let Some(cell_mut) = self.get_cell_mut(row, col) {
+                                *cell_mut = OverlayCell::Mine;
                             }
                         }
-                        OverlayCell::Flagged => {
-                            //*cell = OverlayCell::BadFlag;
-                            // let cell_mut = self.get_cell_mut(row, col).unwrap();
-                            // *cell_mut = OverlayCell::BadFlag;
-                            *self.get_cell_mut(row, col).unwrap() = OverlayCell::BadFlag;
+                        OverlayCell::Flagged => if !self.minefield.is_mine(row, col) {
+                            if let Some(cell_mut) = self.get_cell_mut(row, col) {
+                                *cell_mut = OverlayCell::BadFlag;
+                            }
                         }
                         _ => (),
                     }
