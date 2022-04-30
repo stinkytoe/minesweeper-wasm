@@ -10,56 +10,65 @@ tile_images.src = 'res/minesweeper-tiles.png'
 let game = wasm.WasmGame.new();
 game.stub();
 
+function process_gamestate_section() {
+
+}
+
+
+
+
+
+
 let leftdown = false;
 let middown = false;
 let rightdown = false;
+function process_board_section() {
 
-function process_mouse_movement(x, y) {
-    if (leftdown && !rightdown) 
-        game.mark(x,y);
-    if (leftdown && rightdown)
-        game.mark_block(x,y);
-}
-
-function ev_mousedown(ev) {
-    let x = Math.trunc(ev.offsetX/CELL_SIZE);
-    let y = Math.trunc(ev.offsetY/CELL_SIZE);
-    if (ev.button == 0) 
-        leftdown = true;
-    if (ev.button == 1)
-         middown = true;
-    if (ev.button == 2) {
-        rightdown = true;
-        if (!leftdown) 
-            game.toggle_flag(x,y);
+    function process_mouse_movement(x, y) {
+        if (leftdown && !rightdown) 
+            game.mark(x,y);
+        if (leftdown && rightdown)
+            game.mark_block(x,y);
+    }
+    
+    function ev_mousedown(ev) {
+        let x = Math.trunc(ev.offsetX/CELL_SIZE);
+        let y = Math.trunc(ev.offsetY/CELL_SIZE);
+        if (ev.button == 0) 
+            leftdown = true;
+        if (ev.button == 1)
+             middown = true;
+        if (ev.button == 2) {
+            rightdown = true;
+            if (!leftdown) 
+                game.toggle_flag(x,y);
+        }
+    
+        process_mouse_movement(x,y);
+    
+        //document.getElementById("message-section").textContent = "l:"+leftdown+" m:"+middown+" r:"+rightdown;
     }
 
-    process_mouse_movement(x,y);
-
-    document.getElementById("message-section").textContent = "l:"+leftdown+" m:"+middown+" r:"+rightdown;
-}
-
-function ev_mouseup(ev) {
-    if (ev.button == 0) 
-        leftdown = false;
-    if (ev.button == 1)
-         middown = false;
-    if (ev.button == 2)
-        rightdown = false;
+    function ev_mouseup(ev) {
+        if (ev.button == 0) 
+            leftdown = false;
+        if (ev.button == 1)
+             middown = false;
+        if (ev.button == 2)
+            rightdown = false;
+        
+        game.dig_marked();
     
-    game.dig_marked();
+        //document.getElementById("message-section").textContent = "l:"+leftdown+" m:"+middown+" r:"+rightdown;
+    }
 
-    document.getElementById("message-section").textContent = "l:"+leftdown+" m:"+middown+" r:"+rightdown;
-}
+    function ev_mousemove(ev) {
+        let x = Math.trunc(ev.offsetX/CELL_SIZE);
+        let y = Math.trunc(ev.offsetY/CELL_SIZE);
+    
+        process_mouse_movement(x,y);
+    }
 
-function ev_mousemove(ev) {
-    let x = Math.trunc(ev.offsetX/CELL_SIZE);
-    let y = Math.trunc(ev.offsetY/CELL_SIZE);
-
-    process_mouse_movement(x,y);
-}
-
-const renderLoop = () => {
     let canvas = document.getElementById("minesweeper-field");
     if (canvas == null) {
         canvas = document.createElement('canvas');
@@ -97,6 +106,12 @@ const renderLoop = () => {
                 }
             }
         });
+}
+
+const renderLoop = () => {
+    process_gamestate_section();
+
+    process_board_section();
 
     requestAnimationFrame(renderLoop);
 };

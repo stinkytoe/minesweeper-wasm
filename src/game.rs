@@ -95,11 +95,11 @@ impl Game {
         }
     }
 
-    pub fn reset(&mut self) {
-        self.state = GameState::Waiting;
-        self.overlay = None;
-    }
-
+    /*     pub fn reset(&mut self) {
+           self.state = GameState::Waiting;
+           self.overlay = None;
+       }
+    */
     pub fn toggle_flag(&mut self, row: i32, col: i32) {
         if let GameState::Playing = self.state {
             if let Some(overlay) = self.overlay.as_mut() {

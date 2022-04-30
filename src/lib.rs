@@ -8,6 +8,7 @@ mod game;
 mod minefield;
 mod overlay;
 
+use game::GameState;
 use overlay::OverlayCell;
 use wasm_bindgen::prelude::*;
 
@@ -39,19 +40,23 @@ impl WasmGame {
     }
 
     pub fn mark(&mut self, row: i32, col: i32) {
-        self.marked = Marked::One((row, col));
+        if let GameState::Playing = self.game.get_state() {
+            self.marked = Marked::One((row, col));
+        }
     }
 
     pub fn mark_block(&mut self, row: i32, col: i32) {
-        let mut v = Vec::with_capacity(9);
+        if let GameState::Playing = self.game.get_state() {
+            let mut v = Vec::with_capacity(9);
 
-        for (d_row, d_col) in directions::DIRECTIONS.iter() {
-            v.push((row + d_row, col + d_col));
+            for (d_row, d_col) in directions::DIRECTIONS.iter() {
+                v.push((row + d_row, col + d_col));
+            }
+
+            v.push((row, col));
+
+            self.marked = Marked::Multi(v);
         }
-
-        v.push((row, col));
-
-        self.marked = Marked::Multi(v);
     }
 
     pub fn stub(&mut self) {
@@ -90,6 +95,8 @@ impl WasmGame {
                 overlay::OverlayCell::Uncovered(n) => n + 3,
                 overlay::OverlayCell::Flagged => 13,
                 overlay::OverlayCell::Exploded => 3,
+                overlay::OverlayCell::Mine => 1,
+                overlay::OverlayCell::BadFlag => 2,
             }
         } else {
             0

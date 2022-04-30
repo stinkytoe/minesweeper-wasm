@@ -6,6 +6,8 @@ pub enum OverlayCell {
     Uncovered(u8),
     Flagged,
     Exploded,
+    Mine,
+    BadFlag,
 }
 
 pub struct Overlay {

@@ -1,0 +1,13 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "start",
+			"path": "./www/",
+			"problemMatcher": [],
+			"label": "npm: start - www",
+			"detail": "webpack-dev-server"
+		}
+	]
+}
