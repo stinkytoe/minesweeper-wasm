@@ -133,20 +133,16 @@ impl Overlay {
     pub fn is_victory_condition(&self) -> bool {
         let minecount = self.minefield.get_minecount();
 
-        let mut space_and_flag_count = 0;
+        let mut covered_and_flag_count = self.flagcount;
         for row in 0..self.get_rows() {
             for col in 0..self.get_cols() {
-                if let Some(cell) = self.get_cell(row, col) {
-                    match cell {
-                        OverlayCell::Covered => space_and_flag_count += 1,
-                        OverlayCell::Flagged => space_and_flag_count += 1,
-                        _ => (),
-                    };
+                if let Some(OverlayCell::Covered) = self.get_cell(row, col) {
+                    covered_and_flag_count += 1;
                 }
             }
         }
 
-        minecount == space_and_flag_count
+        minecount == covered_and_flag_count
     }
 
     // This is meant to occur when transitioning to a 'game over' state.
