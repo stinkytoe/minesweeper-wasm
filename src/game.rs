@@ -131,3 +131,9 @@ impl Game {
         }
     }
 }
+
+impl Default for Game {
+    fn default() -> Self {
+        Self::new()
+    }
+}
