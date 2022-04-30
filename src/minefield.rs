@@ -75,7 +75,7 @@ impl Minefield {
 #[test]
 fn test_minefield_new() {
     let m1 = Minefield::new(10, 10, 100);
-    assert!(!m1.is_err());
+    assert!(m1.is_ok());
     let m2 = Minefield::new(10, 10, 101);
-    assert!(m2.is_err());
+    assert!(m2.is_ok());
 }

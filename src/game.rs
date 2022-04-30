@@ -2,7 +2,7 @@
 
 use crate::{
     directions::DIRECTIONS,
-    overlay::{self, Overlay, OverlayCell},
+    overlay::{Overlay, OverlayCell},
 };
 
 #[derive(Clone, Copy)]

@@ -1,7 +1,7 @@
 //extern crate cfg_if;
 extern crate wasm_bindgen;
 
-mod utils;
+//mod utils;
 
 mod directions;
 mod game;
@@ -22,6 +22,13 @@ pub struct WasmGame {
     game: game::Game,
     marked: Marked,
 }
+
+impl Default for WasmGame {
+     fn default() -> Self {
+       Self::new()
+     }
+}
+    
 
 #[wasm_bindgen]
 impl WasmGame {
