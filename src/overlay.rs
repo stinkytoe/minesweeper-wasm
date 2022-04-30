@@ -120,6 +120,32 @@ impl Overlay {
         self.minefield.get_cols()
     }
 
+    // if the sum of flags and covered spaces ever equal the 
+    // number of mines, then the board is complete. Celebrate!
+    pub fn is_victory_condition(&self) -> bool {
+        let minecount = self.minefield.get_minecount();
+
+        let mut space_and_flag_count = 0;
+        for row in 0..self.get_rows() {
+            for col in 0..self.get_cols() {
+                if let Some(cell) = self.get_cell(row, col) {
+                    match cell {
+                        OverlayCell::Covered => space_and_flag_count += 1,
+                        OverlayCell::Flagged => space_and_flag_count += 1,
+                        _ => (),
+                    };
+                }
+            }
+        }
+        
+        minecount == space_and_flag_count
+    }
+
+    // This is meant to occur when transitioning to a 'game over' state.
+    // All covered spots which are covering mines, are changed to mines
+    // *** This should be the only time a OverlayCell::Mine is created!!
+    // All flags which are not actually covering a mine are changed to BadFlag
+    // *** This should be the only time a OverlayCell::BadFlag is created!!
     pub fn reveal_mines(&mut self) {
         for row in 0..self.get_rows() {
             for col in 0..self.get_cols() {
@@ -130,12 +156,32 @@ impl Overlay {
                                 *cell_mut = OverlayCell::Mine;
                             }
                         }
-                        OverlayCell::Flagged => if !self.minefield.is_mine(row, col) {
-                            if let Some(cell_mut) = self.get_cell_mut(row, col) {
-                                *cell_mut = OverlayCell::BadFlag;
+                        OverlayCell::Flagged => {
+                            if !self.minefield.is_mine(row, col) {
+                                if let Some(cell_mut) = self.get_cell_mut(row, col) {
+                                    *cell_mut = OverlayCell::BadFlag;
+                                }
                             }
                         }
                         _ => (),
+                    }
+                }
+            }
+        }
+    }
+
+    // This should occur when transitioning to a 'Game Won' state
+    // all covered spots which actually have a mine under them
+    // are changed to a flag.
+    pub fn flag_all_mines(&mut self) {
+        for row in 0..self.get_rows() {
+            for col in 0..self.get_cols() {
+                //if let Some(cell) = self.get_cell(row, col) {
+                if let Some(OverlayCell::Covered) = self.get_cell(row, col) {
+                    if self.minefield.is_mine(row, col) {
+                        if let Some(cell_mut) = self.get_cell_mut(row, col) {
+                            *cell_mut = OverlayCell::Flagged;
+                        }
                     }
                 }
             }

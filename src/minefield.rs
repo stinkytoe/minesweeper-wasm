@@ -7,6 +7,7 @@ pub enum HiddenCell {
 pub struct Minefield {
     rows: i32,
     cols: i32,
+    minecount: i32,
     hidden_layer: Vec<Vec<HiddenCell>>,
 }
 
@@ -15,7 +16,7 @@ impl Minefield {
         (col >= 0) && (row >= 0) && (col < self.cols) && (row < self.rows)
     }
 
-    pub fn hidden_cell(&self, row: i32, col: i32) -> Option<HiddenCell> {
+    fn hidden_cell(&self, row: i32, col: i32) -> Option<HiddenCell> {
         match self.is_valid_index(row, col) {
             true => Some(self.hidden_layer[row as usize][col as usize]),
             false => None,
@@ -58,8 +59,8 @@ impl Minefield {
         Ok(Minefield {
             rows,
             cols,
+            minecount,
             hidden_layer,
-            // overlay_layer
         })
     }
 
@@ -69,6 +70,10 @@ impl Minefield {
 
     pub fn get_cols(&self) -> i32 {
         self.cols
+    }
+
+    pub fn get_minecount(&self) -> i32 {
+        self.minecount
     }
 }
 

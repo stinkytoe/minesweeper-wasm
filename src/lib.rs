@@ -142,6 +142,7 @@ impl WasmGame {
             game::GameState::Waiting => todo!(),
             game::GameState::Playing => todo!(),
             game::GameState::GameOver => todo!(),
+            game::GameState::GameWon => todo!(),
         }
     }
 }

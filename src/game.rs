@@ -10,6 +10,7 @@ pub enum GameState {
     Waiting,
     Playing,
     GameOver,
+    GameWon,
 }
 
 pub struct Game {
@@ -59,6 +60,12 @@ impl Game {
                         _ => (),
                     }
                 }
+
+                //Now that the digging is done, check for victory and transition accordingly                
+                if overlay.is_victory_condition() {
+                    self.state = GameState::GameWon;
+                    overlay.flag_all_mines();
+                }
             }
         }
     }
@@ -98,11 +105,6 @@ impl Game {
         }
     }
 
-    /*     pub fn reset(&mut self) {
-           self.state = GameState::Waiting;
-           self.overlay = None;
-       }
-    */
     pub fn toggle_flag(&mut self, row: i32, col: i32) {
         if let GameState::Playing = self.state {
             if let Some(overlay) = self.overlay.as_mut() {
