@@ -138,11 +138,13 @@ impl WasmGame {
     }
 
     pub fn get_game_state(&self) -> String {
-        match self.game.get_state() {
+/*         match self.game.get_state() {
             game::GameState::Waiting => todo!(),
             game::GameState::Playing => todo!(),
             game::GameState::GameOver => todo!(),
             game::GameState::GameWon => todo!(),
-        }
+        }; */
+
+        format!("{:?}", self.game.get_state())
     }
 }

@@ -5,7 +5,7 @@ use crate::{
     overlay::{Overlay, OverlayCell},
 };
 
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, Debug)]
 pub enum GameState {
     Waiting,
     Playing,

@@ -11,13 +11,8 @@ let game = wasm.WasmGame.new();
 game.stub();
 
 function process_gamestate_section() {
-
+    document.getElementById("gamestate-section").textContent = game.get_game_state();
 }
-
-
-
-
-
 
 let leftdown = false;
 let middown = false;
@@ -115,5 +110,5 @@ const renderLoop = () => {
 
     requestAnimationFrame(renderLoop);
 };
-//asd
+
 requestAnimationFrame(renderLoop);
